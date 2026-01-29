@@ -14,10 +14,9 @@ def main() -> None:
         email = info.get("email")
         bio = info.get("bio")
         race_data = info.get("race")
-        skills_race = race_data.get("skills")
         guild_inf = info.get("guild")
 
-        if race_data:
+        if race_data and isinstance(race_data, dict):
             name_race = race_data.get("name")
             description_race = race_data.get("description")
             race, created = Race.objects.get_or_create(
@@ -25,7 +24,8 @@ def main() -> None:
                 description=description_race
             )
 
-            if skills_race:
+            skills_race = race_data.get("skills")
+            if skills_race and isinstance(skills_race, list):
                 for skill in skills_race:
                     Skill.objects.get_or_create(
                         name=skill.get("name"),
@@ -33,7 +33,7 @@ def main() -> None:
                         race=race
                     )
 
-            if guild_inf:
+            if guild_inf and isinstance(guild_inf, dict):
                 guild_name = guild_inf.get("name")
                 guild_description = guild_inf.get("description")
 
