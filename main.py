@@ -14,40 +14,41 @@ def main() -> None:
         email = info.get("email")
         bio = info.get("bio")
         race_data = info.get("race")
-        name_race = race_data.get("name")
-        description_race = race_data.get("description")
         skills_race = race_data.get("skills")
         guild_inf = info.get("guild")
 
-        race, created = Race.objects.get_or_create(
-            name=name_race,
-            description=description_race
-        )
-
-        if skills_race:
-            for skill in skills_race:
-                Skill.objects.get_or_create(
-                    name=skill.get("name"),
-                    bonus=skill.get("bonus"),
-                    race=race
-                )
-
-        if guild_inf:
-            guild_name = guild_inf.get("name")
-            guild_description = guild_inf.get("description")
-
-            guild, created = Guild.objects.get_or_create(
-                name=guild_name,
-                description=guild_description
+        if race_data:
+            name_race = race_data.get("name")
+            description_race = race_data.get("description")
+            race, created = Race.objects.get_or_create(
+                name=name_race,
+                description=description_race
             )
 
-        Player.objects.get_or_create(
-            nickname=nickname,
-            email=email,
-            bio=bio,
-            race=race,
-            guild=guild
-        )
+            if skills_race:
+                for skill in skills_race:
+                    Skill.objects.get_or_create(
+                        name=skill.get("name"),
+                        bonus=skill.get("bonus"),
+                        race=race
+                    )
+
+            if guild_inf:
+                guild_name = guild_inf.get("name")
+                guild_description = guild_inf.get("description")
+
+                guild, created = Guild.objects.get_or_create(
+                    name=guild_name,
+                    description=guild_description
+                )
+
+            Player.objects.get_or_create(
+                nickname=nickname,
+                email=email,
+                bio=bio,
+                race=race,
+                guild=guild
+            )
 
 
 if __name__ == "__main__":
